@@ -1,0 +1,44 @@
+close all;
+
+p1_range = (100e3:1e3:60000e3);
+L = length(p1_range);
+
+p1_out = -ones(1,L);
+perc = -ones(1,L);
+energy_per_m3 = -ones(1,L);
+idx = 1;
+for p1 = p1_range%[100e3:1e5:100e6]
+    [p1_out(idx), perc(idx), energy_per_m3(idx)] = compressedAirDiabaticEfficiency(p1);
+    idx = idx+1;
+end
+
+% figure;plot(p1_range/100e3,energy_per_m3/3600/1000);
+% xlabel("pressure ratio [P1 / 100 kPa]");
+% ylabel("energy density [kWh / m^3]");
+% grid on;
+% 
+% figure;plot(p1_range/100e3,energy_per_m3/1e6/1000);
+% xlabel("pressure ratio [P1 / 100 kPa]");
+% ylabel("energy density [MJ / L]");
+% grid on;
+
+
+
+figure;hold on;subplot(2,1,1);
+plot(p1_range/100e3,-energy_per_m3/3600/1000,'LineWidth',3);
+xlabel("pressure ratio [P1 / 100 kPa]",'FontSize',16);
+ylabel("energy density [kWh / L]",'FontSize',16);
+
+grid on;
+subplot(2,1,2);
+plot(p1_range/100e3,-energy_per_m3/1e6,'LineWidth',3);
+xlabel("pressure ratio [P1 / 100 kPa]",'FontSize',16);
+ylabel("energy density [MJ / m^3]",'FontSize',16);
+grid on;
+
+%percentage of work stored as thermal/temperature
+figure;
+plot(p1_range/100e3,100-perc,'LineWidth',3);
+xlabel("pressure ratio [P1 / 100 kPa]",'FontSize',16);
+ylabel("percentage of compression work converted to increase in temperature",'FontSize',16);
+grid on;
